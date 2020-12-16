@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PDFDownloadLink, BlobProvider } from '@react-pdf/renderer'
 import DeclaracionJ from './components/pdf/declaracionJurada'
 import CartaCompro from './components/pdf/cartaCompromiso';
+import Email from './components/email/email';
 import RE06 from './components/pdf/RE06';
 import { act } from 'react-dom/test-utils';
 import swal from 'sweetalert';
@@ -123,17 +124,15 @@ function Formulario(props) {
   else if (bandera === 1 && tipo != null && nombre != null && departamento != null 
     && departamento != null && dui != null && nit != null && facultad != null && carrera != null
     && firma != null && carne != null && fecha != null && correoI != null && correoP != null) {
+      /*  */
     //Formulario para declaracion jurada de beca
     return (<>
       <p className="text-muted mb-4">* Formulario RE-06</p>
       <div className="form-group mb-3">
-        <input id="inputTelH" type="text" placeholder="Numero de telefono de casa" className="form-control rounded-pill border-0 shadow-sm px-4" onChange={(event) => setTelefonoH(event.target.value)} />
+        <textarea id="inputTelC" rows='1' placeholder="Numero de telefono de celular" className="form-control rounded-pill border-0 shadow-sm px-4" onChange={(event) => setTelefonoP(event.target.value)}></textarea>
       </div>
       <div className="form-group mb-3">
-        <input id="inputTelC" type="text" placeholder="Numero de telefono de celular" className="form-control rounded-pill border-0 shadow-sm px-4" onChange={(event) => setTelefonoP(event.target.value)} />
-      </div>
-      <div className="form-group mb-3">
-        <input id="inputDireccion" type="text" placeholder="Direccion" className="form-control rounded-pill border-0 shadow-sm px-4" onChange={(event) => setDireccion(event.target.value)} />
+        <textarea id="inputDireccion" rows='3' placeholder="Direccion" className="form-control rounded-pill border-0 shadow-sm px-4" onChange={(event) => setDireccion(event.target.value)} ></textarea>
       </div>
       <div className="form-group mb-3">
         <textarea placeholder='Actividad desarrollada por el Becario en la Facultad' className="form-control rounded-pill border-0 shadow-sm px-4" id="inputActividad" rows="3" onChange={(event) => setActividad(event.target.value)}></textarea>
@@ -154,6 +153,7 @@ function Formulario(props) {
         nombre={nombre}
         facultad={facultad}
         carrera={carrera}
+        correoP={correoP}
         firma={firma}
         carne={carne}
         telefenoH={telefenoH}
@@ -201,6 +201,11 @@ function Formulario(props) {
         {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Descargar carta de compromiso')}
       </PDFDownloadLink>
     </>);
+  }
+  else if(bandera === 4){
+    return(<>
+    <p>Hola</p>
+    </>)
   }
   else{
     swal("Debe llenar todos los campos", "Revise bien los campos", "error");

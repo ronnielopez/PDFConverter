@@ -96,7 +96,8 @@ const DeclaracionJ = (props) => {
           documentación requerida, para los trámites de refrenda de beca de estudios. Así me expreso, ratifico
           su contenido y firmo, en la ciudad de San Salvador a los {fecha} de dos mil veinte.
           </Text>
-        <Text style={styles.fonts}>Firma : <Image style={styles.firma} src={firma}></Image></Text>
+          <Text style={styles.fonts}>Firma : </Text>
+          <Image style={styles.firma} src={firma}></Image>
         <Text style={styles.fonts}>
           No. de Carné: {carne}
         </Text>

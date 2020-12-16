@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         textAlign: 'justify',
         fontFamily: 'Agency FB',
         lineHeight: 1,
-        paddingHorizontal: 50
+        paddingHorizontal: 50,
     },
     image: {
         marginHorizontal: 50
@@ -59,16 +59,26 @@ const styles = StyleSheet.create({
         position: 'relative',
         marginHorizontal: 250
     },
+    cajita:{
+        marginLeft: 50,
+        fontSize: 14,
+        textAlign: 'justify',
+        fontFamily: 'Agency FB',
+        width: '425',
+        heigth: 'auto',
+        border: '2 solid black'
+    },
 });
 
 const RE06 = (props) => {
+    let date = new Date();
     const nombre = props.nombre;
     const facultad = props.facultad;
     const carrera = props.carrera;
     const firma = props.firma;
     const carne = props.carne;
     const correoP = props.correoP;
-    const fecha = props.fecha;
+    const fecha = date.getDate() + '-' + ( date.getMonth() + 1 ) + '-' + date.getFullYear();;
     const telefonoH = props.telefenoH;
     const telefonoP = props.telefenoP;
     const direccion = props.direccion;
@@ -79,15 +89,15 @@ const RE06 = (props) => {
         <Document>
             <Page style={styles.body}>
                 <Image style={styles.image} src={ImgHeader} fixed></Image>
-                <Text style={styles.fonts}>Nombre de Estudiante : {nombre}</Text>
-                <Text style={styles.fonts}>Carne : {carne} Carrera: {carrera}</Text>
-                <Text style={styles.fonts}>Correo electronico : {correoP} Telefeno casa: {telefonoH} Telefono cel: {telefonoP}</Text>
-                <Text style={styles.fonts}>Direccion : {direccion}</Text>
-                <Text style={styles.fonts}>Fecha de referencia : {fecha} Facultad: {facultad}</Text>
-                <Text style={styles.text}>Actividad a realizar por el Becario en la Facultad: </Text>
-                <Text style={styles.fonts}>{actividad}</Text>
-                <Text style={styles.text}> Carga Académica Inscrita por el Becario en el ciclo: </Text>
-                <Text style={styles.fonts}>{carga}</Text>
+                <Text style={styles.cajita}>Nombre de Estudiante : {nombre}</Text>
+                <Text style={styles.cajita}>Carne : {carne} |  Carrera: {carrera}</Text>
+                <Text style={styles.cajita}>Correo electronico : {correoP} | Telefono cel: {telefonoP}</Text>
+                <Text style={styles.cajita}>Direccion : {direccion}</Text>
+                <Text style={styles.cajita}>Fecha de referencia : {fecha} | Facultad: {facultad}</Text>
+                <Text style={styles.cajita}>Actividad a realizar por el Becario en la Facultad: </Text>
+                <Text style={styles.cajita}>{actividad}</Text>
+                <Text style={styles.cajita}> Carga Académica Inscrita por el Becario en el ciclo: </Text>
+                <Text style={styles.cajita}>{carga}</Text>
                 <Text style={styles.text}></Text>
                 <Image style={styles.firma} src={firma}></Image>
                 <Text style={styles.text}>________________________________     ________________________________</Text>
