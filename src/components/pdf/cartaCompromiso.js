@@ -67,6 +67,7 @@ const CartaCompro = (props) => {
     const nombre = props.nombre;
     const edad = props.edad;
     const departamento = props.departamento;
+    const domicilio = props.domicilio;
     const dui = props.dui;
     const nit = props.nit;
     const facultad = props.facultad;
@@ -87,7 +88,7 @@ const CartaCompro = (props) => {
 
                 <Text style={styles.text}>
                     YO, {nombre}, de {edad} de edad, estudiante, del domicilio
-          de {departamento} Departamento de {departamento},  con Documento Único de Identidad
+          de {domicilio} Departamento de {departamento},  con Documento Único de Identidad
           {dui}; y Número de Identificación
           Tributaria {nit};
           {<Text style={styles.negrita}>DECLARO  BAJO JURAMENTO</Text>}: I) Que me fue REFRENDADA

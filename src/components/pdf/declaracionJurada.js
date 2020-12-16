@@ -61,6 +61,7 @@ const DeclaracionJ = (props) => {
   const nombre = props.nombre;
   const edad = props.edad;
   const departamento = props.departamento;
+  const domicilio = props.domicilio;
   const dui = props.dui;
   const nit = props.nit;
   const facultad = props.facultad;
@@ -80,7 +81,7 @@ const DeclaracionJ = (props) => {
 
         <Text style={styles.text}>
           YO, {nombre}, de {edad} de edad, estudiante, del domicilio
-          de {departamento},  con Documento Único de Identidad
+          de {domicilio} Departamento de {departamento},  con Documento Único de Identidad
           {dui}; y Número de Identificación
           Tributaria {nit};
           {<Text style={styles.negrita}>DECLARO  BAJO JURAMENTO</Text>}: 1. Que en mi calidad de
@@ -95,7 +96,7 @@ const DeclaracionJ = (props) => {
           documentación requerida, para los trámites de refrenda de beca de estudios. Así me expreso, ratifico
           su contenido y firmo, en la ciudad de San Salvador a los {fecha} de dos mil veinte.
           </Text>
-        <Text style={styles.fonts}>Firma : <Image src={firma}></Image></Text>
+        <Text style={styles.fonts}>Firma : <Image style={styles.firma} src={firma}></Image></Text>
         <Text style={styles.fonts}>
           No. de Carné: {carne}
         </Text>

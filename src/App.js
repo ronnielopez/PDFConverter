@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { PDFDownloadLink, BlobProvider } from '@react-pdf/renderer'
 import DeclaracionJ from './components/pdf/declaracionJurada'
 import CartaCompro from './components/pdf/cartaCompromiso';
+import RE06 from './components/pdf/RE06';
+import { act } from 'react-dom/test-utils';
+import swal from 'sweetalert';
 
 function App() {
   const [progress, setProgress] = useState(0);
@@ -42,21 +45,29 @@ function Formulario(props) {
   const [bandera, setBandera] = useState(0);
   //----------------
   //Datos de Declaracion Jurada de Beca
-  const [tipo, setTipo] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [edad, setEdad] = useState("");
-  const [departamento, setDepartamento] = useState("");
-  const [dui, setDui] = useState("");
-  const [nit, setNit] = useState("");
-  const [facultad, setFacultad] = useState("");
-  const [carrera, setCarrera] = useState("");
-  const [firma, setFirma] = useState("sample");
-  const [carne, setCarne] = useState("");
-  const [fecha, setFecha] = useState("");
-  const [correoI, setCorreoI] = useState("");
-  const [correoP, setCorreoP] = useState("");
+  const [tipo, setTipo] = useState(null);
+  const [nombre, setNombre] = useState(null);
+  const [edad, setEdad] = useState(null);
+  const [departamento, setDepartamento] = useState(null);
+  const [domicilio, setDomicilio] = useState(null);
+  const [dui, setDui] = useState(null);
+  const [nit, setNit] = useState(null);
+  const [facultad, setFacultad] = useState(null);
+  const [carrera, setCarrera] = useState(null);
+  const [firma, setFirma] = useState(null);
+  const [carne, setCarne] = useState(null);
+  const [fecha, setFecha] = useState(null);
+  const [correoI, setCorreoI] = useState(null);
+  const [correoP, setCorreoP] = useState(null);
   //Fin de los datos de declaracion Jurada de Beca
 
+  //RE-06 ---------------------------
+  const [telefenoH, setTelefonoH] = useState(null);
+  const [telefenoP, setTelefonoP] = useState(null);
+  const [direccion, setDireccion] = useState(null);
+  const [carga, setCarga] = useState(null);
+  const [actividad, setActividad] = useState(null);
+  //---------------------------------
   if (bandera === 0) {
     //Formulario para declaracion jurada de beca
     return (<>
@@ -72,6 +83,9 @@ function Formulario(props) {
       </div>
       <div className="form-group mb-3">
         <input id="inputDepartamento" type="text" placeholder="Departamento" className="form-control rounded-pill border-0 shadow-sm px-4 text-primary" onChange={(event) => setDepartamento(event.target.value)} />
+      </div>
+      <div className="form-group mb-3">
+        <input id="inputDomicilio" type="text" placeholder="Domicilio" className="form-control rounded-pill border-0 shadow-sm px-4 text-primary" onChange={(event) => setDomicilio(event.target.value)} />
       </div>
       <div className="form-group mb-3">
         <input id="inputDui" type="text" placeholder="Dui (letras)" className="form-control rounded-pill border-0 shadow-sm px-4 text-primary" onChange={(event) => setDui(event.target.value)} />
@@ -98,7 +112,7 @@ function Formulario(props) {
         <input id="inputCorreoI" type="email" placeholder="Correo institucional" className="form-control rounded-pill border-0 shadow-sm px-4 text-primary" onChange={(event) => setCorreoI(event.target.value)} />
       </div>
       <div className="form-group mb-3">
-        <input type="file" accept="image/*,.jpg,.png" className="form-control rounded-pill border-0 shadow-sm px-4 text-primary" id="customFile" onChange={(event) => setFirma(event.target.files[0])} />
+        <input type="file" accept="image/*,.jpg,.png" className="form-control rounded-pill border-0 shadow-sm px-4 text-primary" id="customFile" onChange={(event) => setFirma(URL.createObjectURL(event.target.files[0]))} />
       </div>
       <span className="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm white-text"
         onClick={() => setBandera(1)}>
@@ -106,36 +120,91 @@ function Formulario(props) {
     </span>
     </>)
   }
-  else if (bandera === 1) {
+  else if (bandera === 1 && tipo != null && nombre != null && departamento != null 
+    && departamento != null && dui != null && nit != null && facultad != null && carrera != null
+    && firma != null && carne != null && fecha != null && correoI != null && correoP != null) {
     //Formulario para declaracion jurada de beca
     return (<>
       <p className="text-muted mb-4">* Formulario RE-06</p>
       <div className="form-group mb-3">
-        <input id="inputTelH" type="text" placeholder="Numero de telefono de casa" className="form-control rounded-pill border-0 shadow-sm px-4" onChange={(event) => setTipo(event.target.value)} />
+        <input id="inputTelH" type="text" placeholder="Numero de telefono de casa" className="form-control rounded-pill border-0 shadow-sm px-4" onChange={(event) => setTelefonoH(event.target.value)} />
       </div>
       <div className="form-group mb-3">
-        <input id="inputTelC" type="text" placeholder="Numero de telefono de celular" className="form-control rounded-pill border-0 shadow-sm px-4" onChange={(event) => setTipo(event.target.value)} />
+        <input id="inputTelC" type="text" placeholder="Numero de telefono de celular" className="form-control rounded-pill border-0 shadow-sm px-4" onChange={(event) => setTelefonoP(event.target.value)} />
       </div>
       <div className="form-group mb-3">
-        <input id="inputDireccion" type="text" placeholder="Direccion" className="form-control rounded-pill border-0 shadow-sm px-4" onChange={(event) => setTipo(event.target.value)} />
+        <input id="inputDireccion" type="text" placeholder="Direccion" className="form-control rounded-pill border-0 shadow-sm px-4" onChange={(event) => setDireccion(event.target.value)} />
       </div>
       <div className="form-group mb-3">
-        <textarea placeholder='Actividad desarrollada por el Becario en la Facultad' className="form-control rounded-pill border-0 shadow-sm px-4" id="inputActividad" rows="3"></textarea>
+        <textarea placeholder='Actividad desarrollada por el Becario en la Facultad' className="form-control rounded-pill border-0 shadow-sm px-4" id="inputActividad" rows="3" onChange={(event) => setActividad(event.target.value)}></textarea>
       </div>
       <div className="form-group mb-3">
-        <textarea placeholder='Carga Academica por el becario en el ciclo' className="form-control rounded-pill border-0 shadow-sm px-4" id="inputCarga" rows="3"></textarea>
+        <textarea placeholder='Carga Academica por el becario en el ciclo' className="form-control rounded-pill border-0 shadow-sm px-4" id="inputCarga" rows="3" onChange={(event) => setCarga(event.target.value)}></textarea>
       </div>
       <span className="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm white-text"
         onClick={() => setBandera(2)}>
         Siguiente
     </span>
-      {console.log(bandera)}
     </>)
   }
-  else {
+  else if(bandera === 2 && telefenoH != null && telefenoP != null && direccion != null && actividad != null
+    && carga != null) {
     return (<>
-      <p>Nada</p>
+      <PDFDownloadLink document={<RE06
+        nombre={nombre}
+        facultad={facultad}
+        carrera={carrera}
+        firma={firma}
+        carne={carne}
+        telefenoH={telefenoH}
+        telefenoP={telefenoP}
+        direccion={direccion}
+        actividad={actividad}
+        carga={carga}
+      />} fileName="RE-06.pdf" className='btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm white-text'>
+        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Descargar RE-06')}
+      </PDFDownloadLink>
+      <PDFDownloadLink document={<DeclaracionJ
+        tipo={tipo}
+        nombre={nombre}
+        edad={edad}
+        departamento={departamento}
+        domicilio={domicilio}
+        dui={dui}
+        nit={nit}
+        facultad={facultad}
+        carrera={carrera}
+        firma={firma}
+        carne={carne}
+        fecha={fecha}
+        correoI={correoI}
+        correoP={correoP}
+      />} fileName="Declarion Jurada.pdf" className='btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm white-text'>
+        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Descargar Declaracion Jurada')}
+      </PDFDownloadLink>
+      <PDFDownloadLink document={<CartaCompro
+        tipo={tipo}
+        nombre={nombre}
+        edad={edad}
+        departamento={departamento}
+        domicilio={domicilio}
+        dui={dui}
+        nit={nit}
+        facultad={facultad}
+        carrera={carrera}
+        firma={firma}
+        carne={carne}
+        fecha={fecha}
+        correoI={correoI}
+        correoP={correoP}
+      />} fileName="Carta de compromiso.pdf" className='btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm white-text'>
+        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Descargar carta de compromiso')}
+      </PDFDownloadLink>
     </>);
+  }
+  else{
+    swal("Debe llenar todos los campos", "Revise bien los campos", "error");
+    bandera === 1 ? setBandera(0) : setBandera(1)
   }
 
 }
