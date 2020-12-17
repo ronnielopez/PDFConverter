@@ -24,9 +24,7 @@ function App() {
 
                     <h3 className="display-4">Relleno de formularios de becados</h3>
                     <form>
-                      <Formulario
-                        progress={progress}
-                      />
+                      <Formulario/>
                     </form>
                   </div>
                 </div>
@@ -43,7 +41,7 @@ function App() {
 
 function Formulario(props) {
   //Bandera---------
-  const [bandera, setBandera] = useState(0);
+  const [bandera, setBandera] = useState(4);
   //----------------
   //Datos de Declaracion Jurada de Beca
   const [tipo, setTipo] = useState(null);
@@ -69,6 +67,10 @@ function Formulario(props) {
   const [carga, setCarga] = useState(null);
   const [actividad, setActividad] = useState(null);
   //---------------------------------
+
+  //PDF SEND -------------------------------
+  const [url, setUrl] = useState("");
+  //----------------------------------------
   if (bandera === 0) {
     //Formulario para declaracion jurada de beca
     return (<>
@@ -205,7 +207,39 @@ function Formulario(props) {
   else if(bandera === 4){
     return(<>
     <p>Hola</p>
+    <PDFDownloadLink document={<RE06
+        nombre={nombre}
+        facultad={facultad}
+        carrera={carrera}
+        correoP={correoP}
+        firma={firma}
+        carne={carne}
+        telefenoH={telefenoH}
+        telefenoP={telefenoP}
+        direccion={direccion}
+        actividad={actividad}
+        carga={carga}
+      />} fileName="RE-06.pdf" className='btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm white-text'>
+        {({ blob, url, loading, error }) => {
+          if(!loading){
+            setUrl(url);
+            return 'Descargar';
+          }
+        }}
+      </PDFDownloadLink>
+      <span className="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm white-text"
+        onClick={() => setBandera(5)}>
+        Siguiente
+    </span>
     </>)
+  }
+  else if(bandera === 5){
+    return(
+      <>
+      <Email pdf = {url}/>
+      {console.log(url)}
+      </>
+    );
   }
   else{
     swal("Debe llenar todos los campos", "Revise bien los campos", "error");

@@ -1,25 +1,29 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import path from 'path';
 
 
-const Email = () => {
+const Email = (props) => {
     const [email, SetEmail] = useState("");
     const [nombre, SetNombre] = useState("");
+    const pdf = props.pdf;
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         const dataSubmit = {
-            nombre:nombre,
-            email:email
+            name: nombre,
+            email: email,
+            pdf: pdf
         }
+        console.log(dataSubmit);
 
-        axios("http://localhost:5000/api/sendMail", dataSubmit);
+        axios.post("http://localhost:5000/api/sendMail", dataSubmit);
     }
 
     return (
-        <>  
-            <form onSubmit={handleSubmit}>    
+        <>
+
             <div className="form-group mb-3">
                 <input id="inputNombre" type="text" placeholder="Nombre" className="form-control rounded-pill border-0 shadow-sm px-4" onChange={(event) => SetNombre(event.target.value)} />
             </div>
@@ -30,7 +34,7 @@ const Email = () => {
                 onClick={handleSubmit}>
                 Siguiente
             </span>
-            </form>
+
         </>
     );
 }
