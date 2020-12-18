@@ -24,7 +24,7 @@ function App() {
 
                     <h3 className="display-4">Relleno de formularios de becados</h3>
                     <form>
-                      <Formulario/>
+                      <Formulario />
                     </form>
                   </div>
                 </div>
@@ -41,7 +41,7 @@ function App() {
 
 function Formulario(props) {
   //Bandera---------
-  const [bandera, setBandera] = useState(4);
+  const [bandera, setBandera] = useState(0);
   //----------------
   //Datos de Declaracion Jurada de Beca
   const [tipo, setTipo] = useState(null);
@@ -123,10 +123,10 @@ function Formulario(props) {
     </span>
     </>)
   }
-  else if (bandera === 1 && tipo != null && nombre != null && departamento != null 
+  else if (bandera === 1 && tipo != null && nombre != null && departamento != null
     && departamento != null && dui != null && nit != null && facultad != null && carrera != null
     && firma != null && carne != null && fecha != null && correoI != null && correoP != null) {
-      /*  */
+    /*  */
     //Formulario para declaracion jurada de beca
     return (<>
       <p className="text-muted mb-4">* Formulario RE-06</p>
@@ -148,24 +148,9 @@ function Formulario(props) {
     </span>
     </>)
   }
-  else if(bandera === 2 && telefenoH != null && telefenoP != null && direccion != null && actividad != null
+  else if (bandera === 2 && telefenoP != null && direccion != null && actividad != null
     && carga != null) {
     return (<>
-      <PDFDownloadLink document={<RE06
-        nombre={nombre}
-        facultad={facultad}
-        carrera={carrera}
-        correoP={correoP}
-        firma={firma}
-        carne={carne}
-        telefenoH={telefenoH}
-        telefenoP={telefenoP}
-        direccion={direccion}
-        actividad={actividad}
-        carga={carga}
-      />} fileName="RE-06.pdf" className='btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm white-text'>
-        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Descargar RE-06')}
-      </PDFDownloadLink>
       <PDFDownloadLink document={<DeclaracionJ
         tipo={tipo}
         nombre={nombre}
@@ -182,7 +167,7 @@ function Formulario(props) {
         correoI={correoI}
         correoP={correoP}
       />} fileName="Declarion Jurada.pdf" className='btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm white-text'>
-        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Descargar Declaracion Jurada')}
+        {({ blob, url, loading, error }) => (loading ? 'Cargando...' : 'Descargar Declaracion Jurada') }
       </PDFDownloadLink>
       <PDFDownloadLink document={<CartaCompro
         tipo={tipo}
@@ -200,14 +185,9 @@ function Formulario(props) {
         correoI={correoI}
         correoP={correoP}
       />} fileName="Carta de compromiso.pdf" className='btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm white-text'>
-        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Descargar carta de compromiso')}
+        {({ blob, url, loading, error }) => (loading ? 'Cargando...' : 'Descargar Carta de compromiso')}
       </PDFDownloadLink>
-    </>);
-  }
-  else if(bandera === 4){
-    return(<>
-    <p>Hola</p>
-    <PDFDownloadLink document={<RE06
+      <PDFDownloadLink document={<RE06
         nombre={nombre}
         facultad={facultad}
         carrera={carrera}
@@ -220,28 +200,36 @@ function Formulario(props) {
         actividad={actividad}
         carga={carga}
       />} fileName="RE-06.pdf" className='btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm white-text'>
-        {({ blob, url, loading, error }) => {
-          if(!loading){
-            setUrl(url);
-            return 'Descargar';
+        {({ blob, url, loading, error }) =>{
+          if (loading) {
+            return 'Cargando'
+          } else {
+            let reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function () {
+            let base64data = reader.result;
+            setUrl(base64data);
+            setNombre(nombre);
+            setCorreoI(correoI);
+            }
+            return 'Descargar RE-06'
           }
         }}
       </PDFDownloadLink>
       <span className="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm white-text"
-        onClick={() => setBandera(5)}>
+        onClick={() => setBandera(3)}>
         Siguiente
     </span>
-    </>)
+    </>);
+
   }
-  else if(bandera === 5){
-    return(
-      <>
-      <Email pdf = {url}/>
-      {console.log(url)}
-      </>
-    );
+  else if(bandera === 3){
+    return(<>
+    <p className="text-muted mb-4">* Esta a punto de enviar los archivos</p>
+    <Email nombre={nombre} email={correoI} pdf={url}/>
+    </>);
   }
-  else{
+  else {
     swal("Debe llenar todos los campos", "Revise bien los campos", "error");
     bandera === 1 ? setBandera(0) : setBandera(1)
   }

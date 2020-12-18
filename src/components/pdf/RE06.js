@@ -99,7 +99,7 @@ const RE06 = (props) => {
                 <Text style={styles.cajita}> Carga Académica Inscrita por el Becario en el ciclo: </Text>
                 <Text style={styles.cajita}>{carga}</Text>
                 <Text style={styles.text}></Text>
-                <Image style={styles.firma} src={firmaTemplate}></Image>
+                <Image style={styles.firma} src={firma}></Image>
                 <Text style={styles.text}>________________________________     ________________________________</Text>
                 <Text style={styles.fonts}>Nombre firma y sello del Decano                      Firma</Text>
             </Page>
